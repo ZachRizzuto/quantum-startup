@@ -3,10 +3,7 @@ sales_data_paths = [
     "./data/daily_sales_data_1.csv",
     "./data/daily_sales_data_2.csv",]
 
-processed_paths = [
-    "./data/processed_sales_data_0.csv",
-    "./data/processed_sales_data_1.csv",
-    "./data/processed_sales_data_2.csv",]
+processed_data = []
 
 def process_data(data):
     raw_data = {}
@@ -45,11 +42,14 @@ def process_data(data):
     return processed_data
 
 
-
-for i in range(len(sales_data_paths)):
-    with open(sales_data_paths[i], "r") as f:
+for path in sales_data_paths:
+    with open(path, "r") as f:
+        print(f"Processing {path}...")
         data = f.readlines()
-        processed_data = process_data(data)
+        processed_data.append(process_data(data))
 
-    with open(processed_paths[i], "w") as f:
-        f.writelines(line + "\n" for line in processed_data)
+    
+with open("./data/processed_sales_data.csv", "w") as f:
+    for data in processed_data:
+        for line in data:
+            f.write(line + "\n")
